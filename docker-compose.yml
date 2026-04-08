@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  core_backend:
+    build: 
+      context: .
+      dockerfile: core_backend.Dockerfile
+    container_name: smart_commerce_backend
+    restart: always
+    env_file:
+      - ./core_backend/.env
+    volumes:
+      - db_data:/app/data
+    # Removed ports 8000:8000 to isolate backend
+    networks:
+      - internal_network
+      - proxy_network
+
+  ai_engine:
+    build:
+      context: .
+      dockerfile: ai_service.Dockerfile
+    container_name: smart_commerce_ai
+    restart: always
+    environment:
+      - ENV=production
+    # Internal network only
+    networks:
+      - internal_network
+
+  frontend_proxy:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: smart_commerce_proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - core_backend
+    # Let the proxy talk to the backend, whilst exposing to the host
+    networks:
+      - internal_network
+      - proxy_network
+
+networks:
+  # Internal network where microservices communicate isolated from host
+  internal_network:
+    internal: true
+  
+  # External facing network linked to the React/Nginx proxy bounds
+  proxy_network:
+
+volumes:
+  db_data:

@@ -1,0 +1,25 @@
+====================================================================
+  V5 TRAINING RESULTS -- UCI Online Retail II
+====================================================================
+
+Dataset          : dataset/online_retail_II.csv
+Products trained : 67
+Train sequences  : 10,898
+Test  sequences  : 2,762
+Model params     : 80,058
+
+POOLED TEST METRICS:
+  MAE             : 26.2365
+  RMSE            : 53.6178
+  MAPE            : 173.5044
+  R2              : 0.0788
+  MBD             : 13.2636
+  Theils_U        : 0.7379
+  Dir_Acc         : 42.4484
+
+Mean R2 across all products : -0.1127
+Products with R2 > 0       : 1/67
+Products with R2 > 0.3     : 0/67
+Products with R2 > 0.5     : 0/67
+
+Best product: 21080  R2=0.0250

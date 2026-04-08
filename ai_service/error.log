@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "E:\DynamicPricing\smart-commerce\ai_service\evaluate_lstm.py", line 1, in <module>
+    import pandas as pd
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\__init__.py", line 62, in <module>
+    from pandas.core.api import (
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\api.py", line 47, in <module>
+    from pandas.core.groupby import (
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\groupby\__init__.py", line 1, in <module>
+    from pandas.core.groupby.generic import (
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\groupby\generic.py", line 68, in <module>
+    from pandas.core.frame import DataFrame
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 149, in <module>
+    from pandas.core.generic import (
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\generic.py", line 9, in <module>
+    from json import loads
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 1
+    python tools/clean_buffers.py --yesr"""JSON (JavaScript Object Notation) <https://json.org> is a subset of
+           ^^^^^
+SyntaxError: invalid syntax

@@ -1,0 +1,16 @@
+Starting IEEE Report Generation...
+Traceback (most recent call last):
+  File "E:\DynamicPricing\smart-commerce\ai_service\generate_ieee_report.py", line 145, in <module>
+    plt.plot(range(sample_idx), y_test[1000:1000+sample_idx], label='True Demand', color='black')
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\matplotlib\pyplot.py", line 3794, in plot
+    return gca().plot(
+           ^^^^^^^^^^^
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\matplotlib\axes\_axes.py", line 1779, in plot
+    lines = [*self._get_lines(self, *args, data=data, **kwargs)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\matplotlib\axes\_base.py", line 296, in __call__
+    yield from self._plot_args(
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Deepu\AppData\Local\Programs\Python\Python312\Lib\site-packages\matplotlib\axes\_base.py", line 486, in _plot_args
+    raise ValueError(f"x and y must have same first dimension, but "
+ValueError: x and y must have same first dimension, but have shapes (200,) and (0,)

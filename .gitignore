@@ -1,0 +1,47 @@
+# Environments
+.env
+.env.local
+.venv/
+venv/
+ENV/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# Node/React
+node_modules/
+dist/
+build/
+.npm
+package-lock.json
+
+# Docker / IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Note: We are NOT ignoring sql_app.db because we deliberately want 
+# the seeded test database to be pushed to GitHub for the team.

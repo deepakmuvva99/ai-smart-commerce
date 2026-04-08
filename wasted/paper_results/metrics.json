@@ -1,0 +1,24 @@
+{
+    "LSTM_Forecasting": {
+        "MAE": 18.139560296698804,
+        "RMSE": 31.909931902148973,
+        "MAPE": 19.432386126635258,
+        "R2": 0.2588012146239336
+    },
+    "RL_Pricing": {
+        "Total_Revenue_SAC": 1618314.1654935346,
+        "Total_Revenue_Static": 1722837.4100000001,
+        "Revenue_Uplift_Pct": -6.0669244758543694,
+        "Profit_Margin_SAC": 52.9574185141097,
+        "Price_Variance": 32.16872436502443,
+        "Average_Price_Change_Pct": 26.916418656482104,
+        "Max_Price_Change": 25.265005834579465,
+        "Stockout_Rate": 0.02
+    },
+    "Statistical_Tests": {
+        "T-Statistic": -249.50155418638806,
+        "P-Value": 2.3257053387418002e-249,
+        "Result": "Significant"
+    },
+    "Quality_Control": "Passed"
+}

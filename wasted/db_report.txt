@@ -1,0 +1,62 @@
+============================================================
+DATABASE: sql_app.db
+============================================================
+
+TABLE: users (0 rows)
+  Columns: ['id', 'email', 'password_hash', 'role', 'created_at']
+
+TABLE: products (110 rows)
+  Columns: ['id', 'name', 'description', 'base_price', 'current_price', 'cost_price', 'inventory', 'image_url', 'is_active', 'created_at']
+
+TABLE: orders (0 rows)
+  Columns: ['id', 'user_id', 'product_id', 'quantity', 'price_at_purchase', 'total_amount', 'status', 'created_at']
+
+TABLE: traffic_logs (14 rows)
+  Columns: ['id', 'product_id', 'user_id', 'event_type', 'timestamp']
+
+TABLE: price_history (933 rows)
+  Columns: ['id', 'product_id', 'old_price', 'new_price', 'demand_score', 'reason', 'timestamp']
+
+TABLE: ai_metrics (0 rows)
+  Columns: ['id', 'product_id', 'predicted_demand', 'uncertainty', 'reward', 'model_version', 'timestamp']
+
+============================================================
+SAMPLE PRODUCTS (first 5)
+============================================================
+  ID:1 | Echo Router Elite | Base: $417.86 | AI Price: $472.89 | Stock: 308
+  ID:2 | Aero Mouse Elite | Base: $465.49 | AI Price: $494.76 | Stock: 261
+  ID:3 | Omni Speaker Studio | Base: $484.69 | AI Price: $1072.75 | Stock: 23
+  ID:4 | Aero Headphones Max | Base: $200.50 | AI Price: $238.08 | Stock: 317
+  ID:5 | Pulse Monitor Pro | Base: $62.50 | AI Price: $76.80 | Stock: 158
+
+============================================================
+ALL ORDERS
+============================================================
+  (No orders placed yet)
+
+============================================================
+RECENT AI PRICE ADJUSTMENTS (last 10)
+============================================================
+  #933 | Zero Watch Lite | $632.51 -> $698.01 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.388298
+  #932 | Aero Router Lite | $931.86 -> $1006.79 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.388298
+  #931 | Vanguard Router Elite | $918.63 -> $988.96 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.388298
+  #930 | Core Earbuds V2 | $608.02 -> $659.97 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.388298
+  #929 | Neo Router Elite | $666.91 -> $754.43 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.388298
+  #928 | Neural Earbuds X | $222.22 -> $247.12 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.388298
+  #927 | Quantum Mouse Plus | $95.05 -> $102.88 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.388298
+  #926 | Omni Speaker Studio | $925.00 -> $1072.75 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.385153
+  #925 | Zero Watch Lite | $632.51 -> $698.01 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.368212
+  #924 | Aero Router Lite | $931.86 -> $1006.79 | AI Optimized. Traffic: 14, Sales: 0 | 2026-02-24 10:04:06.368212
+
+  Total AI price adjustments recorded: 933
+
+============================================================
+TRAFFIC SUMMARY
+============================================================
+  Total traffic events (product views): 14
+
+  Top 5 Most Viewed Products:
+    Echo Router Elite: 6 views
+    Omni Speaker Studio: 4 views
+    Hyper Earbuds Pro: 2 views
+    Aero Mouse Elite: 2 views

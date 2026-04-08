@@ -1,0 +1,13 @@
+E:\DynamicPricing\smart-commerce\ai_service\evaluate_lstm.py:59: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\utils\tensor_new.cpp:257.)
+  x_tensor = torch.tensor([x], dtype=torch.float32)
+Evaluating LSTM Demand Forecasting Model...
+
+==================================================
+≡ƒôè LSTM DEMAND MODEL PERFORMANCE METRICS
+==================================================
+Mean Absolute Error (MAE):       5.53 units
+Root Mean Square Error (RMSE):   7.63 units
+Mean Abs Percentage Error (MAPE): 25.32%
+Coefficient of Determination (R┬▓): 0.8725
+
+Γ£à Saved Graph: ai_service/exports/lstm_evaluation.png
