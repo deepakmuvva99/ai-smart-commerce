@@ -26,9 +26,7 @@ Our goal is to make setting up this massive AI infrastructure as easy as a singl
    *Note: The first build will take several minutes as it downloads PyTorch, Node.js, and builds the isolated Linux environments.*
 
 3. **Access the Platform:**
-   - **Main Website / Admin Panel:** Open your browser to `http://localhost`
-   - **Admin Login:** `admin@smartcommerce.com`
-   - **Admin Password:** `admin123`
+   Open your browser to `http://localhost`
 
 4. **Shutdown the Platform:**
    ```bash
@@ -37,50 +35,74 @@ Our goal is to make setting up this massive AI infrastructure as easy as a singl
 
 ---
 
-## 2. Project Overview & "The Why"
-At its core, **Smart Commerce** is an autonomous e-commerce engine that dynamically alters product prices based on user traffic, remaining inventory, and global demand. 
+## 2. Authentication & User Workflows
 
-Instead of relying on human analysts to manually adjust prices, this project fuses **Deep Learning (DL)** to predict demand and **Reinforcement Learning (RL)** to autonomously take action on the prices. It is built using a modern microservice architecture to ensure scalability.
+We utilized strict backend validation logic (via Pydantic) to ensure safe user data.
 
----
+### How to Sign Up (Registration)
+To create a new user account, you must satisfy the API constraints:
+- **Email Constraint**: Must be a structurally valid email (e.g., `user@domain.com`).
+- **Password Constraint**: Must be precisely **8 characters or larger** to prevent Bcrypt processing attacks.
 
-## 3. Microservice Architecture Breakdown
-The system uses Docker Compose to orchestrate three completely separate environments. They run independently and communicate over a secure internal Docker network.
+**Example Signup Data for Testing:**
+- **Email:** `testuser@example.com`
+- **Password:** `password123`
+- **Confirm Password:** `password123`
 
-### Service A: The Frontend Proxy (`frontend_proxy`)
-**Technology:** React, Vite, TailwindCSS, Nginx  
-**Role:** The visual interface of the platform.
-*   **Why Vite & React?** Vite provides lightning-fast compilation, and React allows us to build complex state-driven components like the real-time AI Analytics dashboard.
-*   **Why Nginx?** Nginx acts as our reverse proxy. Instead of the browser trying to find the backend directly, Nginx handles all routing. If a user visits `http://localhost/api/*`, Nginx silently forwards that request to the hidden Backend service. This completely eliminates CORS errors and perfectly mirrors professional enterprise deployments.
+*Once registered, the backend intercepts the signup request and automatically sets `is_verified = True` in the database so you can immediately begin testing the platform.*
 
-### Service B: The Core Backend (`core_backend`)
-**Technology:** Python, FastAPI, SQLite, SQLAlchemy, JWT Authentication  
-**Role:** The central nervous system of the platform.
-*   **Authentication:** Uses standard JSON Web Tokens (JWT) encrypted with bcrypt. It securely hashes passwords and issues bearer tokens validating whether a user is a normal customer or an "Admin".
-*   **Database (SQLite via Docker Volume):** We persist user logic, product catalogs, and transaction history. The database is housed safely in a secure Docker Named Volume (`db_data`) so data survives even if the containers crash.
-*   **The Scheduler:** A background Python thread runs continuously (e.g., every 60 seconds). It loops through the product catalog and asks the AI service: *"Given what just happened, what should the price be now?"*
+### How to Log in (Admin vs User)
+The system employs standard Bearer JSON Web Tokens (JWT). When you sign in, your token determines your role-based access control.
 
-### Service C: The AI Engine (`ai_engine`)
-**Technology:** Python, PyTorch, FastAPI  
-**Role:** The isolated mathematical brain containing our trained models.  
-*   **Deep Learning (BiLSTM):** We utilize a Bidirectional Long Short-Term Memory (BiLSTM) network. This neural network looks at historical data and accurately predicts exactly how much "demand" (purchase volume) a specific product will have shortly.
-*   **Reinforcement Learning (SAC-RL):** We utilize a Soft-Actor Critic (SAC) agent. Unlike normal AI that just outputs a prediction, RL is an "actor". It takes the predicted demand from the Deep Learning model, evaluates the remaining stock, and outputs a calculated `price_multiplier`. 
-    *   *Example:* If demand is soaring and stock is low, the RL agent explores by outputting a `1.05` multiplier, raising the price by 5% to maximize profit automatically. It learns from "Rewards" (sales revenue) sent back to it by the Core Backend every cycle.
+*   **Standard Demo User:** Use your newly generated `testuser@example.com` to explore the frontend UI, view products, and simulate traffic metrics.
+*   **Admin Dashboard Access:** To explore the Machine Learning metrics, you must log in with the hardcoded Admin Root Account.
+    - **Email:** `admin@smartcommerce.com`
+    - **Password:** `admin123`
 
 ---
 
-## 4. Key Platform Features
+## 3. Database Architecture (Schemas & Constraints)
 
-### Authentication & Authorization Flow
-We built custom Pydantic schemas validating all incoming credentials. If a user tries to create an account with a weak password (< 8 chars), the backend returns a `422 Unprocessable Entity` which the Frontend catches and beautifully displays. When validated, the user is given a JWT to access protected endpoints.
+The Core Backend relies on a robust relational SQLite database (`prod_app.db`) mounted directly to a Docker volume (`db_data`) mapped via SQLAlchemy ORMs.
 
-### Real-time AI Settings Dashboard
-Inside the Admin view, the "Platform Settings" panel allows humans to interact directly with the AI. Because the microservices are distinct, the Core Backend fetches live health checks from the AI engine. An Admin can pause the AI pricing optimizer, change the frequency of its evaluations, and force it to retrain its algorithms in real-time.
+### Primary Entities & Constraints
+1. **`users` Table:**
+    - `email` (String, UNIQUE, Indexed): Prevents duplicate accounts.
+    - `role` (String, Default: `user`): Dictates Admin vs Standard permissions.
+    - `is_verified` (Boolean, Default: `True`): Allows instant logins.
+    - *Relationship*: Cascades (Deletes) mapped `carts` and `orders` if a user is wiped.
 
-### Network Isolation & Security Fortification
-To make this project production-ready, security was paramount:
-- **No Open Ports:** The AI Engine and Core Backend do NOT expose any ports to the host machine. You cannot hit them directly.
-- **Proxy Gatekeeper:** The only container exposed to the outside world is the Nginx load balancer (Port 80/443). If a bad actor attempts to exploit Port 8000 on your machine, the connection will be totally refused.
+2. **`products` & `product_variants` Tables:**
+    - `base_price` & `cost_price`: Floating constraints preventing negative values. Used by the ML models to ensure we never price a product below our manufacturing expense.
+    - `inventory`: This is a `@property` aggregation tracking total S/M/L stock volumes across all tied `variants` linked by Foreign Keys.
+    
+3. **`traffic_logs` Table:**
+    - Used directly by our ML system. Every time a user clicks or previews a product, it logs `event_type` and `product_id`. The Deep Learning engine groups this specific timestamp data to calculate future surges.
 
-## 5. Summary
-By decoupling the architecture into decoupled microservices, we achieved an enterprise-grade structure. The Machine Learning models can spin up on massive GPU clusters independently, the frontend can be cached globally on CDNs, and the core transactional backend can scale safely. All of this deploys identically whether you are running it on a local Windows laptop via Docker Compose or on a massive set of AWS EC2 instances.
+4. **`ai_metrics` & `price_history` Tables:**
+    - `predicted_demand` & `reward`: Traces exact decisions made by the RL Agent so administrators can visualize the performance algorithm directly on the dashboard over time.
+
+---
+
+## 4. Deep Machine Learning Architecture
+
+At its core, **Smart Commerce** is an autonomous e-commerce engine that removes human analysts entirely, relying on continuous multi-stage intelligence streams.
+
+### Phase 1: Deep Learning (DL) - The BiLSTM Predictor
+**File location:** `ai_service/Transformer_model/`
+- **What it does:** It predicts the exact future demand (sales volume) for any given product over the next 24 hours.
+- **How it works:** We trained a Bidirectional Long Short-Term Memory (BiLSTM) network. Unlike regular neural networks that only look at data backward, BiLSTMs analyze sequential transaction history in both directions simultaneously. By feeding it historical `traffic_logs` and `order_items`, the network learns complex consumer trends (like spikes on weekends or during sales) and produces a raw `predicted_demand` output (e.g., 6.4 predicted sales).
+
+### Phase 2: Reinforcement Learning (RL) - The SAC Agent
+**File location:** `ai_service/sac_rl/`
+- **What it does:** It chooses how to manipulate the product price uniquely based on the BiLSTM's demand prediction.
+- **How it works:** We use a Soft-Actor Critic (SAC) algorithm. This is an "Actor" model. It reads the State array (Current Price, Base Price, Inventory level, Traffic size, and the *DL Predicted Demand*). It then autonomously explores by shifting a continuous action vector (`price_multiplier`).
+    - *Example Case*: If the DL predicts huge demand (150 sales), but Inventory is critically low (10 items), the SAC RL Agent recognizes this scenario based on past rewards and forces the `price_multiplier` to 1.15x to drastically raise prices, restrict volume, and maximize overall profit.
+- **The Reward Cycle:** Every few minutes, the `core_backend` scheduler runs, checks how much real revenue the system generated from the recent price change, and fires an HTTP `/reward` payload down to the `ai_engine`. The SAC agent consumes this experience to iteratively rewrite its policy network toward higher accuracy.
+
+---
+
+## 5. Security Summary
+By decoupling the architecture into containerized microservices, we achieved an enterprise-grade structure.
+- **Internal Networks:** The AI Engine (Port 8001) and Backend (Port 8000) **do not exist** on the host. An external attacker scanning your IP address cannot see or contact them.
+- **Proxy Gatekeeper:** The only path inward is through Nginx via Port 80, traversing the `/api/*` directory, which strictly filters and masks CORS origin paths.

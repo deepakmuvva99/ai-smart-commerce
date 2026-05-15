@@ -52,7 +52,7 @@ export default function Home() {
             <div className="absolute top-[20%] right-[-20%] w-[40%] h-[40%] rounded-full bg-violet-600/20 blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }} />
 
             {/* Hero Section */}
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pb-32">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 sm:pt-16 sm:pb-24 lg:pb-32">
                 <div className="text-center lg:text-left flex flex-col lg:flex-row items-center gap-12">
 
                     {/* Left Column (Text Config) */}

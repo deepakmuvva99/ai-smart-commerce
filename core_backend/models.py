@@ -8,7 +8,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     password_hash = Column(String)
-    role = Column(String, default="user") # admin/user
+    role = Column(String, default="customer") # admin/customer
     is_verified = Column(Boolean, default=False)
     verification_token = Column(String, nullable=True, index=True)
     reset_password_token = Column(String, nullable=True, index=True)

@@ -56,7 +56,15 @@ def get_current_admin_user(current_user: models.User = Depends(get_current_user)
     if current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="The user doesn't have enough privileges",
+            detail="The user doesn't have enough privileges (Admin only)",
+        )
+    return current_user
+
+def get_current_customer_user(current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "customer":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="The user doesn't have enough privileges (Customer only)",
         )
     return current_user
 
@@ -73,7 +81,8 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         email=user.email, 
         password_hash=hashed_password,
         verification_token=verification_token,
-        is_verified=True
+        is_verified=True,
+        role="customer" # Explicitly set to customer for safety
     )
     db.add(db_user)
     db.commit()
@@ -81,7 +90,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     
     # In a real app, this token would be emailed. For demo purposes, we return it.
     return {
-        "user": schemas.UserResponse.from_orm(db_user),
+        "user": schemas.UserResponse.model_validate(db_user),
         "message": "Registration successful. Please verify your email.",
         "verification_token": verification_token
     }

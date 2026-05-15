@@ -64,7 +64,7 @@ export default function AdminDashboard() {
     ];
 
     return (
-        <div className="flex h-screen bg-transparent relative overflow-hidden text-gray-100">
+        <div className="flex h-[calc(100vh-104px)] bg-transparent relative overflow-hidden text-gray-100">
             {/* Ambient Admin Background Glow */}
             <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[150px] pointer-events-none block z-0" />
             <div className="absolute bottom-[0%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-600/10 blur-[120px] pointer-events-none block z-0" />

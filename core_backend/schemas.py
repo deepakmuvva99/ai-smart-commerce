@@ -19,7 +19,7 @@ class UserResponse(UserBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ProductVariantBase(BaseModel):
     size: Optional[str] = Field(None, max_length=50, pattern=r"^[\w\s\-]+$")
@@ -34,7 +34,7 @@ class ProductVariantResponse(ProductVariantBase):
     product_id: int
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ProductBase(BaseModel):
     name: str = Field(..., min_length=2, max_length=150, pattern=r"^[\w\s\-\.\,\&]+$")
@@ -55,7 +55,7 @@ class ProductResponse(ProductBase):
     variants: List[ProductVariantResponse] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class TrafficLogCreate(BaseModel):
     event_type: str = Field(..., min_length=2, max_length=100, pattern=r"^[a-zA-Z0-9\_]+$")
@@ -74,7 +74,7 @@ class OrderItemResponse(BaseModel):
     price_at_purchase: float
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class OrderResponse(BaseModel):
     id: int
@@ -85,4 +85,4 @@ class OrderResponse(BaseModel):
     items: List[OrderItemResponse] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

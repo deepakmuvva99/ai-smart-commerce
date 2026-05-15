@@ -75,7 +75,7 @@ export default function ProductList() {
         <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="min-h-screen py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+            className="min-h-screen pt-8 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
         >
             <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[150px] pointer-events-none" />
 

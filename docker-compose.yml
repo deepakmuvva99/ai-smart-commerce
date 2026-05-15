@@ -1,16 +1,15 @@
-version: '3.8'
-
 services:
   core_backend:
     build: 
       context: .
       dockerfile: core_backend.Dockerfile
+    image: smart_commerce_backend_image
     container_name: smart_commerce_backend
     restart: always
     env_file:
       - ./core_backend/.env
     volumes:
-      - db_data:/app/data
+      - ./core_backend:/app/core_backend
     # Removed ports 8000:8000 to isolate backend
     networks:
       - internal_network
@@ -20,6 +19,7 @@ services:
     build:
       context: .
       dockerfile: ai_service.Dockerfile
+    image: smart_commerce_ai_image
     container_name: smart_commerce_ai
     restart: always
     environment:
@@ -32,6 +32,7 @@ services:
     build:
       context: .
       dockerfile: frontend.Dockerfile
+    image: smart_commerce_proxy_image
     container_name: smart_commerce_proxy
     restart: always
     ports:

@@ -5,6 +5,9 @@
 venv/
 ENV/
 env/
+wasted/
+.gemini/
+.planning/
 
 # Python
 __pycache__/

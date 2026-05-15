@@ -25,7 +25,7 @@ function App() {
           <div className="min-h-screen flex flex-col font-sans text-gray-100 selection:bg-indigo-500/30">
             <Toaster theme="dark" position="top-right" richColors toastOptions={{ className: 'glass-panel border-white/10' }} />
             <Navbar />
-            <main className="flex-grow">
+            <main className="flex-grow pt-[104px]">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
